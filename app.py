@@ -1,12 +1,16 @@
-# app.py
-
 import streamlit as st
-import joblib
+import pickle
 import numpy as np
-import pandas as pd
+import bz2
 
-# Load the trained model
-model = joblib.load('rainfall_prediction_model.pkl')
+# Load the trained model from the compressed .bz2 file
+def load_model(file_path):
+    with bz2.open(file_path, 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+# Path to the compressed model file
+model = load_model('rainfall_prediction_model_compressed.pkl.bz2')
 
 # Define a function for prediction
 def predict_rainfall(input_data):
